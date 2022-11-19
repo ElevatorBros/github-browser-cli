@@ -20,9 +20,12 @@ func Fuzzy(repos []Repo) {
                 }
                 return fmt.Sprintf(
                     "Owner: %s\nName: %s\nStars: %d",
-                    repos[i].Owner,
                     repos[i].Name,
-                    repos[i].Stars)
+                    repos[i].Stars,
+                    repos[i].Language,
+                    repos[i].License,
+                    repos[i].Last_Updated,
+                )
      }))
 
 	if err != nil {

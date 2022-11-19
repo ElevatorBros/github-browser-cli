@@ -1,15 +1,16 @@
 package main
 
 import (
-    "net/http"
-    "os"
-    "fmt"
-    "log"
-    "github.com/PuerkitoBio/goquery"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func main() {
-
     webPage := "http://github.com/search?o=desc&s=stars&type=Repositories&q=" + os.Args[1]
     resp, err := http.Get(webPage)
 
@@ -31,11 +32,24 @@ func main() {
 
     //title := doc.Find(".repo-list").Text()
     //fmt.Println(title)
-    selection := doc.Find(".repo-list").Find("a.v-align-middle")
+    // var repos []Repo
+    selection := doc.Find(".repo-list")
     selection.Each(func(i int, s *goquery.Selection) {
         // For each item found, get the title
-        title := s.Text()
-        fmt.Printf("%s\n", title)
+        // name := s.Find("a.v-align-middle").Text()
+        // description := s.Find("p.mb-1").Text()
+        // stars := strings.Trim(s.Find("div.mr-3 a.Link--muted").Text(), " ")
+        bar := s.Find("div.d-flex.flex-wrap.text-small.color-fg-muted").Find("div.mr-3")
+        bar.Each(func(i int, s *goquery.Selection) {
+            fmt.Printf("%s", strings.ReplaceAll(strings.Trim(s.Text(), " "), "\n", ""))
+        })
+        // repos = append(repos, Repo{
+        //     Name: name,
+        //     Description: description,
+        //     Stars: stars,
+        //     Language: s.Find("span[item='programmingLanguage']").Text(),
+        //
+        // })
     })
 }
 
