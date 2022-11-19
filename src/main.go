@@ -1,14 +1,11 @@
 package main
 
 import (
-	"fmt"
-	tea "github.com/charmbracelet/bubbletea"
-	"log"
-	"net/http"
-	"os"
+    "fmt"
+    "os"
 )
 
 func main() {
-	args := os.Args[1:]
-	fmt.Println(args)
+    args := os.Args[1:]
+    fmt.Println(args)
 }
