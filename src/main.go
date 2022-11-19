@@ -36,12 +36,20 @@ func main() {
     selection := doc.Find(".repo-list")
     selection.Each(func(i int, s *goquery.Selection) {
         // For each item found, get the title
-        // name := s.Find("a.v-align-middle").Text()
+        name := s.Find("a.v-align-middle")
+        var arr []Repo
+        name.Each(func(i int, s *goquery.Selection) {
+            // For each item found, get the title
+            repoNameUser := strings.Split(s.Text(), "/")
+            arr = append(arr, Repo{repoNameUser[0], repoNameUser[1], "", ""})
+
+        })
         // description := s.Find("p.mb-1").Text()
         // stars := strings.Trim(s.Find("div.mr-3 a.Link--muted").Text(), " ")
         bar := s.Find("div.d-flex.flex-wrap.text-small.color-fg-muted").Find("div.mr-3")
         bar.Each(func(i int, s *goquery.Selection) {
-            fmt.Printf("%s", strings.ReplaceAll(strings.Trim(s.Text(), " "), "\n", ""))
+            
+            fmt.Println(strings.ReplaceAll(strings.Trim(s.Text(), " "), "\n", ""))
         })
         // repos = append(repos, Repo{
         //     Name: name,
