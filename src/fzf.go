@@ -7,7 +7,7 @@ import (
 )
 
 // main function
-func Fuzzy(repos []Repo) {
+func Fuzzy(repos []Repo) int {
 	idx, err := fuzzyfinder.FindMulti(
 		repos,
 		func(i int) string { 
@@ -19,8 +19,7 @@ func Fuzzy(repos []Repo) {
                     return ""
                 }
                 return fmt.Sprintf(
-                    "Owner: %s\nName: %s\nDesc: %s\nBar: %s\n",
-                    repos[i].Owner,
+                    "Name: %s\nDesc: %s\nInfo: %s\n",
                     repos[i].Name,
                     repos[i].Description,
                     repos[i].Bar,
@@ -31,6 +30,5 @@ func Fuzzy(repos []Repo) {
         log.Fatalf("Error performing fuzzy find: %s", err.Error())
 	}
 
-	//this prints what you selected after you press enter
-	fmt.Printf("selected: %v\n", idx)
+    return idx[0]
 }
