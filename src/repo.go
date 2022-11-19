@@ -1,10 +1,11 @@
 package main
 
 type Repo struct {
-    name string
-    language string
-    last_updated string
-    stars int
-    description string
-    tags []string
+    Owner string
+    Name string
+    Language string
+    Last_Updated string
+    Stars int
+    Description string
+    Tags []string
 }

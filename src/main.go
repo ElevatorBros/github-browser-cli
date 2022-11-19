@@ -1,11 +1,11 @@
 package main
 
 import (
+    "net/http"
     "os"
     "fmt"
-    "github.com/PuerkitoBio/goquery"
     "log"
-    "net/http"
+    "github.com/PuerkitoBio/goquery"
 )
 
 func main() {
