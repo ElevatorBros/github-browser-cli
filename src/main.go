@@ -1,10 +1,13 @@
 package main
 
 import (
-  "log"
-  "net/http"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
-
+	args := os.Args[1:]
+	fmt.Println(args)
 }
