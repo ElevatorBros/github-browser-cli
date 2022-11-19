@@ -1,28 +1,41 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"os"
+    "os"
+    "fmt"
+    "github.com/PuerkitoBio/goquery"
+    "log"
+    "net/http"
 )
 
 func main() {
-    args := os.Args[1:]
-    fmt.Println(args)
 
-    url := "https://www.github.com/search?q=" + args[0]
-    resp, err := http.Get(url)
+    webPage := "http://github.com/search?o=desc&s=stars&type=Repositories&q=" + os.Args[1]
+    resp, err := http.Get(webPage)
+
     if err != nil {
-        log.Fatalln(err)
+        log.Fatal(err)
     }
+
     defer resp.Body.Close()
 
-    body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-        log.Fatalln(err)
+    if resp.StatusCode != 200 {
+        log.Fatalf("failed to fetch data: %d %s", resp.StatusCode, resp.Status)
     }
 
-    fmt.Println(string(body))
+    doc, err := goquery.NewDocumentFromReader(resp.Body)
+
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    //title := doc.Find(".repo-list").Text()
+    //fmt.Println(title)
+    selection := doc.Find(".repo-list").Find("a.v-align-middle")
+    selection.Each(func(i int, s *goquery.Selection) {
+        // For each item found, get the title
+        title := s.Text()
+        fmt.Printf("%s\n", title)
+    })
 }
+
