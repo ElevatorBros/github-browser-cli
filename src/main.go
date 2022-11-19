@@ -5,8 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
-
+    "strings"
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -33,31 +32,17 @@ func main() {
     //title := doc.Find(".repo-list").Text()
     //fmt.Println(title)
     // var repos []Repo
-    selection := doc.Find(".repo-list")
+    selection := doc.Find(".repo-list-item")
     selection.Each(func(i int, s *goquery.Selection) {
-        // For each item found, get the title
-        name := s.Find("a.v-align-middle")
-        var arr []Repo
-        name.Each(func(i int, s *goquery.Selection) {
-            // For each item found, get the title
-            repoNameUser := strings.Split(s.Text(), "/")
-            arr = append(arr, Repo{repoNameUser[0], repoNameUser[1], "", ""})
-
-        })
-        // description := s.Find("p.mb-1").Text()
-        // stars := strings.Trim(s.Find("div.mr-3 a.Link--muted").Text(), " ")
-        bar := s.Find("div.d-flex.flex-wrap.text-small.color-fg-muted").Find("div.mr-3")
-        bar.Each(func(i int, s *goquery.Selection) {
-            
-            fmt.Println(strings.ReplaceAll(strings.Trim(s.Text(), " "), "\n", ""))
-        })
-        // repos = append(repos, Repo{
-        //     Name: name,
-        //     Description: description,
-        //     Stars: stars,
-        //     Language: s.Find("span[item='programmingLanguage']").Text(),
-        //
-        // })
+        data := s.Find("div.d-flex.flex-wrap.text-small.color-fg-muted").Text()
+        data = strings.ReplaceAll(data, "\n", " ")
+        data = strings.Trim(data, "  ")
+        for _, elem := range strings.Split(data, "  ") {
+            if elem == "" {
+                continue
+            }
+            fmt.Printf("%s\n", strings.Trim(elem, " "))
+        }
     })
 }
 
