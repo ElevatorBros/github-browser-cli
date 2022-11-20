@@ -13,3 +13,4 @@ clean:
 
 deps:
 	go get github.com/ktr0731/go-fuzzyfinder 
+	go get github.com/PuerkitoBio/goquery
