@@ -15,21 +15,25 @@ type Repo struct {
 }
 
 func (repo Repo) GetReadMe() string {
-    url := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/README.md", repo.Name, repo.GetDefaultBranch()) 
-    resp, err := http.Get(url)
-    if err != nil {
-        log.Fatalf("Error curling readme: %s", err.Error())
-    }
-    defer resp.Body.Close()
-    if resp.StatusCode != 200 {
-        return "Readme not found"
-    }
-    body, err := io.ReadAll(resp.Body)
-    if err != nil { 
-        log.Fatalf("Error reading read me: %s", err.Error())
-    }
+    types := []string {"README.md", "README", "README.en.md" }
+    for _, readme := range types {
+        url := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/%s", repo.Name, repo.GetDefaultBranch(), readme) 
+        resp, err := http.Get(url)
+        if err != nil {
+            log.Fatalf("Error curling readme: %s", err.Error())
+        }
+        defer resp.Body.Close()
+        if resp.StatusCode != 200 {
+            continue
+        }
+        body, err := io.ReadAll(resp.Body)
+        if err != nil { 
+            log.Fatalf("Error reading read me: %s", err.Error())
+        }
 
-    return string(body)
+        return string(body)
+    }
+    return "Readme not found"
 }
 
 
