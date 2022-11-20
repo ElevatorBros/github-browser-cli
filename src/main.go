@@ -71,7 +71,6 @@ func main() {
     // -s : sort by stars (default relevence)
     // -r : sort by recently updated
     // -h : help
-
     search := ""
     sortOrder := ""
     pages := 1
@@ -104,11 +103,16 @@ func main() {
 
     search = strings.ReplaceAll(search, " ", "%20")
     repos := getRepos(search, sortOrder, pages)
-    idx := Fuzzy(repos)
-    if idx != 0 {
-        fmt.Printf("%v\n", repos[idx].Name)
+    repo := Fuzzy(repos)
+    fmt.Printf("%s\n", repo.Name)
+    fmt.Printf("\n\n%s\n", repo.GetReadMe())
 
-        cmd := exec.Command("git", "clone", fmt.Sprintf("git@github.com:%s.git", repos[idx].Name))
+    var reply string
+    fmt.Print("\n\nWould you like to clone this repo? [Y/n]: ")
+    fmt.Scanln(&reply)
+    fmt.Println()
+    if lower(reply) == "y" {
+        cmd := exec.Command("git", "clone", fmt.Sprintf("git@github.com:%s.git", repo.Name))
         err := cmd.Run()
         if err != nil {
             log.Fatalf("Error cloning repo: %s", err.Error())

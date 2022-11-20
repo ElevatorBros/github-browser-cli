@@ -10,8 +10,8 @@ import (
 )
 
 // main function
-func Fuzzy(repos []Repo) int {
-	idx, err := fuzzyfinder.FindMulti(
+func Fuzzy(repos []Repo) Repo {
+	idx, err := fuzzyfinder.Find(
 		repos,
 		func(i int) string {
 			return repos[i].Name
@@ -33,5 +33,5 @@ func Fuzzy(repos []Repo) int {
 		log.Fatalf("Error performing fuzzy find: %s", err.Error())
 	}
 
-	return idx[0]
+	return repos[idx]
 }
