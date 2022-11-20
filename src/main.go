@@ -14,11 +14,11 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func getRepos(search string, pages int) ([]Repo) {
+func getRepos(search string, sortOrder string, pages int) ([]Repo) {
     var repos []Repo
     for i := 1; i <= pages; i++ {
         page := strconv.Itoa(i)
-        webPage := "http://github.com/search?o=desc&s=stars&type=Repositories&q=" + search + "&p=" + page
+        webPage := "http://github.com/search?o=desc&s=" + sortOrder + "&type=Repositories&q=" + search + "&p=" + page
         resp, err := http.Get(webPage)
 
         if err != nil {
@@ -57,8 +57,53 @@ func getRepos(search string, pages int) ([]Repo) {
     return repos
 }
 
+func printHelp() {
+    fmt.Println("Usage: ./src search [args]")
+    fmt.Println("\t-s : sort by stars")
+    fmt.Println("\t-r : sort by recently updated")
+    fmt.Println("\t-p [number of pages] : number of pages to include in search")
+    fmt.Println("\t-h : print this help")
+}
+
 func main() {
-    repos := getRepos(os.Args[1], 2)
+    // ./src search [args]
+    // -p int : pages
+    // -s : sort by stars (default relevence)
+    // -r : sort by recently updated
+    // -h : help
+
+    search := ""
+    sortOrder := ""
+    pages := 1
+
+    if len(os.Args) == 1 {
+        printHelp()
+        os.Exit(0)
+    }
+
+    for i := 1; i < len(os.Args); i++ {
+        if os.Args[i] == "-s" {
+            sortOrder = "stars"
+        } else if os.Args[i] == "-r" {
+            sortOrder = "updated"
+        } else if os.Args[i] == "-p" {
+            newPages, err := strconv.Atoi(os.Args[i+1])
+            if err != nil {
+                printHelp()
+                os.Exit(0)
+            }
+            pages = newPages
+            i++
+        } else if os.Args[i] == "-h" {
+            printHelp()
+            os.Exit(0)
+        } else {
+            search += os.Args[i] + " "
+        }
+    }
+
+    search = strings.ReplaceAll(search, " ", "%20")
+    repos := getRepos(search, sortOrder, pages)
     idx := Fuzzy(repos)
     if idx != 0 {
         fmt.Printf("%v\n", repos[idx].Name)
