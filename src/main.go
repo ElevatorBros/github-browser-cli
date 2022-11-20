@@ -62,8 +62,9 @@ func printHelp() {
     fmt.Println("\t-s : sort by stars")
     fmt.Println("\t-r : sort by recently updated")
     fmt.Println("\t-p [number of pages] : number of pages to include in search")
-    fmt.Println("\t-h : print this help")
     fmt.Println("\t-n : disable read me support")
+    fmt.Println("\t-u : search for a specific user")
+    fmt.Println("\t-h : print this help")
 }
 
 func main() {
@@ -75,13 +76,13 @@ func main() {
     search := ""
     sortOrder := ""
     pages := 1
+    read := true
 
     if len(os.Args) == 1 {
         printHelp()
         os.Exit(0)
     }
 
-    read := true
     for i := 1; i < len(os.Args); i++ {
         if os.Args[i] == "-s" {
             sortOrder = "stars"
@@ -96,6 +97,13 @@ func main() {
                 os.Exit(0)
             }
             pages = newPages
+            i++
+        } else if os.Args[i] == "-u" {
+            if i == len(os.Args) - 1 {
+                printHelp()
+                os.Exit(1)
+            }
+            search += "user%3A" + os.Args[i+1] + " "
             i++
         } else if os.Args[i] == "-h" {
             printHelp()
