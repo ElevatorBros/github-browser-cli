@@ -125,7 +125,7 @@ func main() {
     fmt.Print("\n\nWould you like to clone this repo? [Y/n]: ")
     fmt.Scanln(&reply)
     fmt.Println()
-    if lower(reply) == "y" {
+    if lower(reply) != "n" {
         cmd := exec.Command("git", "clone", fmt.Sprintf("git@github.com:%s.git", repo.Name))
         err := cmd.Run()
         if err != nil {
