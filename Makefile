@@ -1,10 +1,11 @@
 BINARY_NAME=main.out
+FLAGS=-ldflags "-w"
 
 build:
-	go build -o ${BINARY_NAME} src/*.go
+	go build ${FLAGS} -o ${BINARY_NAME} src/*.go 
 
 run:
-	go build -o ${BINARY_NAME} src/*.go
+	make build
 	./${BINARY_NAME} $(arg)
 
 clean:
