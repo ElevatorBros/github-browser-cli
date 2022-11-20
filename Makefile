@@ -5,7 +5,7 @@ build:
 
 run:
 	go build -o ${BINARY_NAME} src/*.go
-	./${BINARY_NAME}
+	./${BINARY_NAME} $(arg)
 
 clean:
 	go clean
