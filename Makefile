@@ -1,5 +1,5 @@
 BINARY_NAME=main.out
-FLAGS=-ldflags "-w"
+FLAGS=-ldflags "-s -w"
 
 build:
 	go build ${FLAGS} -o ${BINARY_NAME} src/*.go 
