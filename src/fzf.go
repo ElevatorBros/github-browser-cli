@@ -25,7 +25,7 @@ func Fuzzy(repos []Repo) int {
 					"Name: %s\nDesc: %s\nInfo: %s\n",
 					repos[i].Name,
 					repos[i].Description,
-					strings.ReplaceAll(repos[i].Bar, "    ", "\n"),
+					strings.ReplaceAll(strings.ReplaceAll(repos[i].Bar, "    ", "\n"), "issues\nneed help", "issues need help"),
 				)
 			}))
 
