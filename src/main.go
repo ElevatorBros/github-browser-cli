@@ -4,9 +4,12 @@ import (
 	"log"
 	"net/http"
 	"os"
-    "os/exec"
-    "fmt"
-    "strings"
+	"regexp"
+
+	"os/exec"
+	"fmt"
+	"strings"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
@@ -37,7 +40,9 @@ func main() {
     selection.Each(func(i int, s *goquery.Selection) {
         data := s.Find("div.d-flex.flex-wrap.text-small.color-fg-muted").Text()
         data = strings.ReplaceAll(data, "\n", " ")
-        data = strings.Trim(data, "  ")
+        //data = strings.Trim(data, "  ")
+        var re = regexp.MustCompile("[ ]{2,}")
+        data = re.ReplaceAllString(data, "$1    $2")
         repos = append(repos, Repo {
             Name: s.Find("a.v-align-middle").Text(),
             Description: s.Find("p.mb-1").Text(),
