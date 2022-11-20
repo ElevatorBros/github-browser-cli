@@ -63,6 +63,7 @@ func printHelp() {
     fmt.Println("\t-r : sort by recently updated")
     fmt.Println("\t-p [number of pages] : number of pages to include in search")
     fmt.Println("\t-h : print this help")
+    fmt.Println("\t-n : disable read me support")
 }
 
 func main() {
@@ -80,11 +81,14 @@ func main() {
         os.Exit(0)
     }
 
+    read := true
     for i := 1; i < len(os.Args); i++ {
         if os.Args[i] == "-s" {
             sortOrder = "stars"
         } else if os.Args[i] == "-r" {
             sortOrder = "updated"
+        } else if os.Args[i] == "-n" {
+            read = false
         } else if os.Args[i] == "-p" {
             newPages, err := strconv.Atoi(os.Args[i+1])
             if err != nil {
@@ -105,7 +109,9 @@ func main() {
     repos := getRepos(search, sortOrder, pages)
     repo := Fuzzy(repos)
     fmt.Printf("%s\n", repo.Name)
-    fmt.Printf("\n\n%s\n", repo.GetReadMe())
+    if read {
+        fmt.Printf("\n\n%s\n", repo.GetReadMe())
+    }
 
     var reply string
     fmt.Print("\n\nWould you like to clone this repo? [Y/n]: ")

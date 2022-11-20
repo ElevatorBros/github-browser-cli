@@ -21,6 +21,9 @@ func (repo Repo) GetReadMe() string {
         log.Fatalf("Error curling readme: %s", err.Error())
     }
     defer resp.Body.Close()
+    if resp.StatusCode != 200 {
+        return "Readme not found"
+    }
     body, err := io.ReadAll(resp.Body)
     if err != nil { 
         log.Fatalf("Error reading read me: %s", err.Error())

@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
 	//"go/format"
-	"log"
 	"strings"
 
 	fuzzyfinder "github.com/ktr0731/go-fuzzyfinder"
@@ -30,7 +30,8 @@ func Fuzzy(repos []Repo) Repo {
 			}))
 
 	if err != nil {
-		log.Fatalf("Error performing fuzzy find: %s", err.Error())
+		// log.Fatalf("Error performing fuzzy find: %s", err.Error())
+        os.Exit(0)
 	}
 
 	return repos[idx]
